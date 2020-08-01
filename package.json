@@ -10,12 +10,14 @@
     "redux": "^4.0.5"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^4.3.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
   "scripts": {
-    "webpack": "webpack"
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
