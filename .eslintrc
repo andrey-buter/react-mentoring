@@ -1,0 +1,17 @@
+{
+	"parser": "babel-eslint",
+	// "compilerOptions": {
+	// 	"target": "ES6",
+	// 	"module": "commonjs"
+	// }
+	"rules": {
+		"no-unused-vars": "warn"
+	},
+	"env": {
+		"es6": true,
+		"browser": true
+	},
+	"extends": [
+		"eslint:recommended"
+	]
+}

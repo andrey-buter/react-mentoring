@@ -5,6 +5,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
 const TersetWebpackPlugin = require("terser-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -13,8 +14,9 @@ module.exports = {
   context: path.resolve(__dirname, "src"),
   mode: "development",
   entry: {
-    main: ["@babel/polyfill", "./index.js"],
+    main: ["@babel/polyfill", "./index.jsx"],
     nextBundle: "./next-script.ts",
+    test: "./babel.js",
   },
   output: {
     // https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
@@ -40,6 +42,7 @@ module.exports = {
     port: 4000,
     hot: isDev,
   },
+  devtool: isDev ? "source-map" : "",
   plugins: [
     new HTMLWebpackPlugin({
       template: "./index.html",
@@ -57,6 +60,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
+    isDev ? new BundleAnalyzerPlugin() : null,
   ],
   module: {
     rules: [
@@ -94,13 +98,16 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-            plugins: ["@babel/plugin-proposal-class-properties"],
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env"],
+              plugins: ["@babel/plugin-proposal-class-properties"],
+            },
           },
-        },
+          isDev ? "eslint-loader" : null,
+        ],
       },
       {
         test: /\.ts$/,
@@ -114,7 +121,7 @@ module.exports = {
         },
       },
       {
-        test: /\.jss$/,
+        test: /\.jsx$/,
         exclude: /node_modules/,
         loader: {
           loader: "babel-loader",
