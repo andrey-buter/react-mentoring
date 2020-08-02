@@ -1,3 +1,4 @@
+// @see https://habr.com/ru/company/dodopizzadev/blog/473648/
 {
 	"parser": "babel-eslint",
 	// "compilerOptions": {
@@ -8,8 +9,12 @@
 		"no-unused-vars": "warn"
 	},
 	"env": {
+		// Проект для браузера
+		"browser": true,
+		// Включаем возможности ES6
 		"es6": true,
-		"browser": true
+		// Добавляем возможности ES2017
+		"es2017": true
 	},
 	"extends": [
 		"eslint:recommended"

@@ -48,6 +48,9 @@ module.exports = {
       template: "./index.html",
       minify: {
         collapseWhitespace: isProd,
+        removeComments: isProd,
+        removeRedundantAttributes: isProd,
+        useShortDoctype: isProd,
       },
     }),
     new CleanWebpackPlugin(),
