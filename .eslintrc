@@ -1,4 +1,5 @@
 // @see https://habr.com/ru/company/dodopizzadev/blog/473648/
+// https://tproger.ru/translations/setting-up-eslint-and-prettier/
 {
 	"parser": "babel-eslint",
 	// "compilerOptions": {
