@@ -1,0 +1,56 @@
+{
+	"movies": [
+		{
+			"id": "1",
+			"title": "React Mentoring Program",
+			"releaseDate": "2020-07-07",
+			"genreIds": ["1"],
+			"thumbnail": ""
+		},
+		{
+			"id": "2",
+			"title": "Comedy Club",
+			"releaseDate": "2010-07-07",
+			"genreIds": [
+				"2"
+			],
+			"thumbnail": ""
+		},
+		{
+			"id": "3",
+			"title": "The Earth",
+			"releaseDate": "2010-01-07",
+			"genreIds": [
+				"1", "4"
+			],
+			"thumbnail": ""
+		},
+		{
+			"id": "4",
+			"title": "Leon",
+			"releaseDate": "1998-12-12",
+			"genreIds": [
+				"3", "4"
+			],
+			"thumbnail": ""
+		},
+		{
+			"id": "5",
+			"title": "Angular",
+			"releaseDate": "2018-07-07",
+			"genreIds": [
+				"1"
+			],
+			"thumbnail": ""
+		},
+		{
+			"id": "6",
+			"title": "Make it clear",
+			"releaseDate": "2019-07-07",
+			"genreIds": [
+				"1", "2", "3", "4"
+			],
+			"thumbnail": ""
+		}
+	]
+}
