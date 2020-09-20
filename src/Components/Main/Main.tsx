@@ -1,7 +1,7 @@
 import React from 'react';
 
 import FiltersPanel from '@Components/FiltersPanel/FiltersPanel';
-import MoviesList from '@Components/MoviesList/MoviesList';
+import WordList from '@Components/WordList/WordList';
 import WrapperSc from '@StyledComponents/Wrapper/Wrapper';
 import styled from 'styled-components';
 
@@ -19,7 +19,7 @@ const Main = () =>
 	<MainSc>
 		<WrapperSc>
 			<FiltersPanel />
-			<MoviesList />
+			<WordList />
 		</WrapperSc>
 	</MainSc>;
 

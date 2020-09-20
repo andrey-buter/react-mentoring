@@ -20,7 +20,7 @@ module.exports = {
 	},
 	output: {
 		// https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
-		filename: "[name].[hash].js",
+		filename: isDev ? "[name].js" : "[name].[hash].js",
 		path: path.resolve(__dirname, "dist"),
 	},
 	resolve: {
@@ -31,6 +31,7 @@ module.exports = {
 			"@StyledComponents": path.resolve(__dirname, "src/StyledComponents"),
 			"@Services": path.resolve(__dirname, "src/Services"),
 			"@Data": path.resolve(__dirname, "src/Assets/data"),
+			"@Context": path.resolve(__dirname, "src/Context"),
 			"@": path.resolve(__dirname, "src"),
 		},
 	},
@@ -71,7 +72,7 @@ module.exports = {
 		// 	]
 		// }),
 		new MiniCssExtractPlugin({
-			filename: "[name].[contenthash].css",
+			filename: isDev ? "[name].css" : "[name].[contenthash].css",
 		}),
 		// isDev ? new BundleAnalyzerPlugin() : null,
 	],
@@ -123,7 +124,7 @@ module.exports = {
 				use: {
 					loader: 'file-loader',
 					options: {
-						name: "[path][name].[hash].[ext]",
+						name: isDev ? "[path][name].[ext]" : "[path][name].[hash].[ext]",
 					},
 				}
 			},

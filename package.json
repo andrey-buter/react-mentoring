@@ -26,7 +26,9 @@
   },
   "homepage": "https://github.com/andrey-buter/react-mentoring#readme",
   "dependencies": {
+    "@firebase/firestore-types": "^1.12.1",
     "babel-polyfill": "^6.26.0",
+    "firebase": "^7.20.0",
     "jest": "^26.2.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

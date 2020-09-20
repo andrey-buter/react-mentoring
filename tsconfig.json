@@ -18,6 +18,9 @@
 			"@Data/*": [
 				"Assets/data/*"
 			],
+			"@Context/*": [
+				"Context/*"
+			],
 			"@/*": [
 				"./*"
 			]

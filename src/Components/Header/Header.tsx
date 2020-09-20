@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component, MouseEvent } from 'react';
 
 import bgImage from '@/Assets/images/header-background.jpg';
-import AddMovieButton from '@Components/AddMovieButton/AddMovieButton';
+import AddNewWordModal from '@Components/AddNewWordModal/AddNewWordModal';
+import AddWordButton from '@Components/AddWordButton/AddWordButton';
 import Link from '@Components/Link/Link';
 import LogoSc from '@Components/Logo/Logo';
 import SearchBox from '@Components/SearchBox/SearchBox';
@@ -30,23 +31,55 @@ const LogoSc2 = styled.div`
 
 const HeaderWrapperSc = styled(WrapperSc)`
 	display: flex;
-	height: 400px;
+	height: 70px;
 	align-items: center;
 	justify-content: center;
 `;
 
-const Header = () =>
-	<HeaderSc image={bgImage}>
-		<HeaderShadowSc></HeaderShadowSc>
-		<HeaderWrapperSc>
-			<LogoSc2>
-				<Link to='/'>
-					<LogoSc />
-				</Link>
-			</LogoSc2>
-			<AddMovieButton />
-			<SearchBox />
-		</HeaderWrapperSc>
-	</HeaderSc>;
+interface State {
+	isOpenModal: boolean;
+}
+
+class Header extends Component<{}, State> {
+	state: State = {
+		isOpenModal: false
+	};
+
+	constructor(props: {}) {
+		super(props);
+	}
+
+	openModal = (event: MouseEvent) => {
+		this.setState({
+			isOpenModal: true
+		})
+	}
+
+	closeModal = () => {
+		this.setState({
+			isOpenModal: false
+		})
+	}
+
+	render() {
+		const { isOpenModal } = this.state;
+
+		return <>
+			<HeaderSc image={bgImage}>
+				<HeaderShadowSc></HeaderShadowSc>
+				<HeaderWrapperSc>
+					<LogoSc2>
+						<Link to='/'>
+							<LogoSc />
+						</Link>
+					</LogoSc2>
+					<AddWordButton click={this.openModal} />
+					<SearchBox />
+				</HeaderWrapperSc>
+				{isOpenModal ? <AddNewWordModal close={this.closeModal} /> : null }
+			</HeaderSc>
+		</>
+	}
+}
 
 export default Header;
