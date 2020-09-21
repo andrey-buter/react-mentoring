@@ -8,10 +8,21 @@ const Div = styled.div`
 	justify-content: space-between;
 `;
 
-const FiltersPanel = () =>
-	<Div>
-		<FilterByCategory />
-		<FilterSortBy />
-	</Div>;
+interface Props {
+	groupBy: (groupBy: string) => void;
+}
+
+const FiltersPanel = (props: Props) => {
+	const onSelect = (groupBy: string) => {
+		props.groupBy(groupBy);
+	}
+
+	return (
+		<Div>
+			<FilterByCategory select={onSelect} />
+			<FilterSortBy />
+		</Div>
+	);
+}
 
 export default FiltersPanel;

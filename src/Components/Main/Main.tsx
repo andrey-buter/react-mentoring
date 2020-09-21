@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FiltersPanel from '@Components/FiltersPanel/FiltersPanel';
 import WordList from '@Components/WordList/WordList';
@@ -15,12 +15,22 @@ const MainSc = styled.div`
 	}
 `;
 
-const Main = () =>
-	<MainSc>
-		<WrapperSc>
-			<FiltersPanel />
-			<WordList />
-		</WrapperSc>
-	</MainSc>;
+const Main = () => {
+	const [stateValue, setState] = useState<string>(null);
+
+	const onGroupBy = (groupBy: string) => {
+		setState(groupBy || '');
+	};
+
+	return (
+		<MainSc>
+			<WrapperSc>
+				<FiltersPanel groupBy={onGroupBy} />
+				{/* TODO: как именуются кастомные эвенты в реакте? */}
+				<WordList groupBy={stateValue} />
+			</WrapperSc>
+		</MainSc>
+	);
+}
 
 export default Main;

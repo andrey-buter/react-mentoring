@@ -14,7 +14,11 @@ const Ul = styled.ul`
 	flex-wrap: wrap;
 `;
 
-class WordList extends Component<{}, StateModel> {
+interface Props {
+	groupBy: string;
+}
+
+class WordList extends Component<Props, StateModel> {
 	state: StateModel = {
 		words: null,
 		openEditModal: false,
@@ -22,7 +26,7 @@ class WordList extends Component<{}, StateModel> {
 		handlingWord: null
 	};
 
-	constructor(props: {}) {
+	constructor(props: Props) {
 		super(props);
 	}
 
