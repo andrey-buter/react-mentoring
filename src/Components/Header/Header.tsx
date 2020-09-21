@@ -45,10 +45,6 @@ class Header extends Component<{}, State> {
 		isOpenModal: false
 	};
 
-	constructor(props: {}) {
-		super(props);
-	}
-
 	openModal = (event: MouseEvent) => {
 		this.setState({
 			isOpenModal: true

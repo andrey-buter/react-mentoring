@@ -45,7 +45,6 @@ const Modal = (props: Props) => {
 
 	const close = (event: MouseEvent) => {
 		if (modalRef.current === (event.target as HTMLDivElement)) {
-			debugger
 			props.close(event);
 		}
 	}
