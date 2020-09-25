@@ -58,16 +58,17 @@ class WordList extends Component<Props, StateModel> {
 			<div>
 				{counterMessage}
 			</div>
-			{/* Можно ли делать и как цикл в цикл */}
-			{words ? (<ul>
-				{groupedWords.map((group) => <li key={group.id}>
-					<h3>{group.id}</h3>
+			{words ? (
+				<ul>
+					{groupedWords.map((group) => <li key={group.id}>
+						<h3>{group.id}</h3>
 
-					<Ul>
-						{group.words.map((word) => <WordListItem key={word.id} word={word} edit={this.openEditModal} remove={this.opedRemoveModal} />)}
-					</Ul>
-				</li>}
-			</ul>) : null}
+						<Ul>
+							{group.words.map((word) => <WordListItem key={word.id} word={word} edit={this.openEditModal} remove={this.opedRemoveModal} />)}
+						</Ul>
+					</li>)}
+				</ul>
+			) : null}
 			{openEditModal ?
 				<Modal close={this.closeModal} title='Edit word'>
 					<WordEditForm data={handlingWord} submit={this.saveWord} />
@@ -151,6 +152,8 @@ class WordList extends Component<Props, StateModel> {
 	}
 
 	private groupWords(groupBy: string, words: Word[]): GroupedWordsModel[] {
+		console.log('groupBy', groupBy);
+
 		switch (groupBy) {
 			case GroupByWords.Site:
 				return this.groupWordsBySite(words);
