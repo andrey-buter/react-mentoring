@@ -7,8 +7,9 @@ import { Word } from '@Models/word.model';
 import { RawWordsDatabase } from '@Models/words-database.model';
 import { firebaseService } from '@Services/Firebase/Firebase.service';
 import ButtonSc from '@StyledComponents/Button/Button';
-import React, { Component, MouseEvent } from 'react';
+import React, { Component, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import groupByService from './group-words.service';
 import { StateModel } from './state.model';
 
 const Ul = styled.ul`
@@ -20,96 +21,88 @@ interface Props {
 	groupBy: string;
 }
 
-class WordList extends Component<Props, StateModel> {
-	state: StateModel = {
-		words: null,
-		openEditModal: false,
-		openRemoveModal: false,
+interface ModalState {
+	isOpenEditModal: boolean;
+	isOpenRemoveModal: boolean;
+	handlingWord: Word | null;
+}
+
+const WordList = (props: Props) => {
+	const [init] = useState<undefined>();
+	const [words, setWords] = useState<Word[] | null>(null);
+	const [modalState, setModalState] = useState<ModalState>({
+		isOpenEditModal: false,
+		isOpenRemoveModal: false,
 		handlingWord: null
-	};
+	});
 
-	constructor(props: Props) {
-		super(props);
-	}
+	// TODO: every component renders two times. WHy?
 
-	componentDidMount() {
-		this.initData();
-	}
+	useEffect(() => {
+		firebaseService.init()
+			.then((words: RawWordsDatabase) => Object.keys(words).map((id) => {
+				return {
+					id,
+					...words[id]
+				};
+			}))
+			.then((words: Word[]) => {
+				setWords(words);
+			});
+	}, [init]);
 
-	render() {
-		let counterMessage: string;
-		const { words, openEditModal, openRemoveModal, handlingWord } = this.state;
-
+	const messageCounter = useMemo(() => {
 		if (!words) {
-			counterMessage = 'Loading...';
-		} else
-		if (0 === words.length) {
-			counterMessage = 'No Words Found';
-		} else
-		if (1 === words.length) {
-			counterMessage = '1 Word Found';
-		} else {
-			counterMessage = `${words.length} Words Found`;
+			return 'Loading...';
 		}
 
-		const groupedWords = this.groupWords(this.props.groupBy, words || []);
+		if (0 === words.length) {
+			return 'No Words Found';
+		}
 
-		return <>
-			<div>
-				{counterMessage}
-			</div>
-			{words ? (
-				<ul>
-					{groupedWords.map((group) => <li key={group.id}>
-						<h3>{group.id}</h3>
+		if (1 === words.length) {
+			return '1 Word Found';
+		}
 
-						<Ul>
-							{group.words.map((word) => <WordListItem key={word.id} word={word} edit={this.openEditModal} remove={this.opedRemoveModal} />)}
-						</Ul>
-					</li>)}
-				</ul>
-			) : null}
-			{openEditModal ?
-				<Modal close={this.closeModal} title='Edit word'>
-					<WordEditForm data={handlingWord} submit={this.saveWord} />
-				</Modal> : null}
-			{openRemoveModal ?
-				<Modal close={this.closeModal} title='Delete word'>
-					Remove word {handlingWord?.selection || handlingWord?.originWord} - {handlingWord?.translation}
-					<div>
-						<ButtonSc onClick={this.removeWord}>Remove</ButtonSc>
-					</div>
-				</Modal> : null}
-		</>;
-	}
+		return `${words.length} Words Found`;
+	}, [words])
 
-	openEditModal = (word: Word) => {
-		this.setState({
-			openEditModal: true,
+	const groupWords = useCallback((groupBy: string, words: Word[]) => {
+		return groupByService.groupWords(groupBy, words);
+	}, [words, props.groupBy]);
+
+	const groupedWords = groupWords(props.groupBy, words || []);
+
+	const openEditModal = (word: Word) => {
+		setModalState((prev) => ({
+			...prev,
+			isOpenEditModal: true,
 			handlingWord: word
-		});
+		}));
 	}
 
-	opedRemoveModal = (word: Word) => {
-		this.setState({
-			openRemoveModal: true,
+	const opedRemoveModal = (word: Word) => {
+		setModalState((prev) => ({
+			...prev,
+			isOpenRemoveModal: true,
 			handlingWord: word
-		});
+		}));
 	}
 
-	closeModal = () => {
-		this.setState({
-			openEditModal: false,
-			openRemoveModal: false,
+	const closeModal = () => {
+		setModalState((prev) => ({
+			...prev,
+			isOpenRemoveModal: false,
+			isOpenEditModal: false,
 			handlingWord: null
-		});
+		}));
 	}
 
-	saveWord = () => {
-		const { handlingWord, words } = this.state;
+	const saveWord = () => {
+		const { handlingWord } = modalState;
 
 		if (!handlingWord || !words) {
-			this.closeModal();
+			closeModal();
 
 			return;
 		}
@@ -122,17 +115,17 @@ class WordList extends Component<Props, StateModel> {
 			return output;
 		}, [] as Word[]);
 
-		this.setState({ words: updatedWords });
-		this.closeModal();
+		setWords(updatedWords);
+		closeModal();
 	}
 
-	removeWord = (event: MouseEvent) => {
+	const removeWord = (event: MouseEvent) => {
 		event.preventDefault();
 
-		const { handlingWord, words } = this.state;
+		const { handlingWord } = modalState;
 
 		if (!handlingWord || !words) {
-			this.closeModal();
+			closeModal();
 
 			return;
 		}
@@ -147,88 +140,39 @@ class WordList extends Component<Props, StateModel> {
 			return output;
 		}, [] as Word[]);
 
-		this.setState({ words: updatedWords });
-		this.closeModal();
+		setWords(updatedWords);
+		closeModal();
 	}
 
-	private groupWords(groupBy: string, words: Word[]): GroupedWordsModel[] {
-		console.log('groupBy', groupBy);
+	const { isOpenEditModal, isOpenRemoveModal, handlingWord } = modalState;
 
-		switch (groupBy) {
-			case GroupByWords.Site:
-				return this.groupWordsBySite(words);
+	return <>
+		<div>
+			{messageCounter}
+		</div>
+		{words ? (
+			<ul>
+				{groupedWords.map((group) => <li key={group.id}>
+					<h3>{group.id}</h3>
 
-			case GroupByWords.SameWord:
-				return this.groupWordsTheSameWord(words);
-
-			case GroupByWords.All:
-			default:
-				return this.groupWordsByAll(words);
-		};
-	}
-
-	private groupWordsByAll(words: Word[]): GroupedWordsModel[] {
-		return [
-			{
-				id: 'All',
-				words
-			}
-		]
-	}
-
-	private groupWordsBySite(words: Word[]): GroupedWordsModel[] {
-		const groupedWords = words
-			.reduce((output, word) => {
-				if (!output[word.uri]) {
-					output[word.uri] = [];
-				}
-				output[word.uri].push(word);
-
-				return output;
-			}, {} as {[key: string]: Word[]});
-
-		return Object.keys(groupedWords).map((key) => {
-			return {
-				id: key,
-				words: groupedWords[key]
-			};
-		})
-	}
-
-	private groupWordsTheSameWord(words: Word[]): GroupedWordsModel[] {
-		const groupedWords = words
-			.reduce((output, word) => {
-				const key = word.originWord || word.selection.trim();
-				if (!output[key]) {
-					output[key] = [];
-				}
-				output[key].push(word);
-
-				return output;
-			}, {} as { [key: string]: Word[] });
-
-		return Object.keys(groupedWords).map((key) => {
-			return {
-				id: key,
-				words: groupedWords[key]
-			};
-		})
-	}
-
-	private initData() {
-		firebaseService.init()
-			.then((words: RawWordsDatabase) => Object.keys(words).map((id) => {
-				return {
-					id,
-					...words[id]
-				};
-			}))
-			.then((words: Word[]) => {
-				this.setState({
-					words
-				});
-			})
-	}
+					<Ul>
+						{group.words.map((word) => <WordListItem key={word.id} word={word} edit={openEditModal} remove={opedRemoveModal} />)}
+					</Ul>
+				</li>)}
+			</ul>
+		) : null}
+		{isOpenEditModal ?
+			<Modal close={closeModal} title='Edit word'>
+				<WordEditForm data={handlingWord} submit={saveWord} />
+			</Modal> : null}
+		{isOpenRemoveModal ?
+			<Modal close={closeModal} title='Delete word'>
+				Remove word {handlingWord?.selection || handlingWord?.originWord} - {handlingWord?.translation}
+				<div>
+					<ButtonSc onClick={removeWord}>Remove</ButtonSc>
+				</div>
+			</Modal> : null}
+	</>;
 }
 
 export default WordList;

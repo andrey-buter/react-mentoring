@@ -55,10 +55,6 @@ const WordListItem = (props: Props) => {
 
 	const {openDetails} = useWordDetailsContext();
 
-	useEffect(() => {
-		console.log('render', word.id);
-	})
-
 	return (
 		<ArticleSc>
 			<div>
