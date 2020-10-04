@@ -1,9 +1,12 @@
+import { openModal } from '@/Store/Actions';
 import Link from '@Components/Link/Link';
 import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
 import { Word } from '@Models/word.model';
 import ButtonSc from '@StyledComponents/Button/Button';
 import PropTypes from 'prop-types';
 import React, { MouseEvent, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const ArticleSc = styled.article`
@@ -35,22 +38,24 @@ const LinkSc = styled.a`
 
 interface Props {
 	word: Word;
-	edit: (word: Word) => void;
-	remove: (word: Word) => void;
 }
 
-const WordListItem = (props: Props) => {
-	const { word } = props;
+interface State {
+	openModal: (id: string, data: Word) => void;
+}
+
+const WordListItem = (props: Props & State) => {
+	const { word, openModal } = props;
 
 	const edit = (event: MouseEvent) => {
 		// TODO: why to do preventDefault
 		event.preventDefault();
-		props.edit(props.word);
+		openModal('editWord', word);
 	}
 
 	const remove = (event: MouseEvent) => {
 		event.preventDefault();
-		props.remove(word);
+		openModal('removeWord', word);
 	}
 
 	const {openDetails} = useWordDetailsContext();
@@ -85,4 +90,10 @@ const WordListItem = (props: Props) => {
 // 	})
 // };
 
-export default WordListItem;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		openModal: (id: string, data: Word) => dispatch(openModal({ id, data }))
+	}
+}
+
+export default connect(null, mapDispatchToProps)(WordListItem);

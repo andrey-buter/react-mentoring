@@ -1,4 +1,7 @@
+import { closeModal } from '@/Store/Actions';
 import React, { MouseEvent } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import styled from 'styled-components';
 
@@ -36,16 +39,19 @@ const ModalTitleSc = styled.h3`
 
 interface Props {
 	children: React.ReactNode,
-	close: (event: MouseEvent) => void,
 	title: string,
 }
 
-const Modal = (props: Props) => {
+interface State {
+	close: () => void;
+}
+
+const Modal = (props: Props & State) => {
 	const modalRef = React.createRef<HTMLDivElement>();
 
 	const close = (event: MouseEvent) => {
 		if (modalRef.current === (event.target as HTMLDivElement)) {
-			props.close(event);
+			props.close();
 		}
 	}
 
@@ -60,4 +66,10 @@ const Modal = (props: Props) => {
 	</>;
 }
 
-export default Modal;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		close: () => dispatch(closeModal())
+	}
+}
+
+export default connect(null, mapDispatchToProps)(Modal);

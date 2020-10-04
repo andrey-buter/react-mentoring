@@ -4,13 +4,9 @@ import React, { MouseEvent } from 'react';
 
 import styled from 'styled-components';
 
-interface Props {
-	close: () => void;
-}
-
-const AddNewWordModal = (props: Props) => {
+const AddNewWordModal = () => {
 	return (
-		<Modal close={props.close} title='Add a new word'>
+		<Modal title='Add a new word'>
 			<WordEditForm />
 		</Modal>
 	);
