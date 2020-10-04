@@ -1,5 +1,6 @@
 import { Store } from '@/Store/Models';
 import WordListItem from '@Components/WordListItem/WordListItem';
+import { GroupByWords } from '@Models/group-by-words.enum';
 import { Word } from '@Models/word.model';
 import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
@@ -11,16 +12,13 @@ const Ul = styled.ul`
 	flex-wrap: wrap;
 `;
 
-interface Props {
-	groupBy: string;
-}
-
 interface State {
 	words: Word[];
+	groupBy: GroupByWords;
 }
 
-const WordList = (props: Props & State) => {
-	const { words } = props;
+const WordList = (props: State) => {
+	const { words, groupBy } = props;
 
 	const messageCounter = useMemo(() => {
 		if (!words) {
@@ -40,9 +38,9 @@ const WordList = (props: Props & State) => {
 
 	const groupWords = useCallback((groupBy: string, words: Word[]) => {
 		return groupByService.groupWords(groupBy, words);
-	}, [words, props.groupBy]);
+	}, [words, groupBy]);
 
-	const groupedWords = groupWords(props.groupBy, words || []);
+	const groupedWords = groupWords(groupBy, words || []);
 
 	return <>
 		<div>
@@ -66,7 +64,7 @@ const mapStateToProps = (state: Store) => {
 	const { wordsState } = state;
 
 	return {
-		words: wordsState.words
+		...wordsState
 	}
 }
 

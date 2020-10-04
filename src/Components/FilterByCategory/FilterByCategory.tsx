@@ -1,5 +1,9 @@
+import { groupByWords } from '@/Store/Actions/words/group-by.action';
+import { Store } from '@/Store/Models';
 import { GroupByWords } from '@Models/group-by-words.enum';
 import React, { MouseEvent } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const Ul = styled.ul`
@@ -10,16 +14,19 @@ const Li = styled.li`
 
 `;
 
-interface Props {
-	select: (groupBy: string) => void;
+interface State {
+	groupBy: GroupByWords,
+	updateGroupBy: (groupBy: GroupByWords) => void;
 }
 
 interface Category {
 	id: string;
-	label: string;
+	label: GroupByWords;
 }
 
-const FilterByCategory = (props: Props) => {
+const FilterByCategory = (props: State) => {
+	const { updateGroupBy } = props;
+
 	const categories: Category[] = Object.keys(GroupByWords).map((key) => ({
 		id: key,
 		label: GroupByWords[key as keyof typeof GroupByWords]
@@ -28,7 +35,7 @@ const FilterByCategory = (props: Props) => {
 	const select = (category: Category) => (event: MouseEvent) => {
 		event.preventDefault();
 
-		props.select(category.label);
+		updateGroupBy(category.label);
 	}
 
 	return (
@@ -47,4 +54,18 @@ const FilterByCategory = (props: Props) => {
 	);
 };
 
-export default FilterByCategory;
+const mapStateToProps = (state: Store) => {
+	const { wordsState } = state;
+
+	return {
+		groupBy: wordsState.groupBy
+	}
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		updateGroupBy: (groupBy: GroupByWords) => dispatch(groupByWords(groupBy))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterByCategory);
