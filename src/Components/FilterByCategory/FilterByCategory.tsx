@@ -1,5 +1,5 @@
-import Link from '@Components/Link/Link';
-import React from 'react';
+import { GroupByWords } from '@Models/group-by-words.enum';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 
 const Ul = styled.ul`
@@ -10,29 +10,40 @@ const Li = styled.li`
 
 `;
 
-const FilterByCategory = () => {
-	const categories = [
-		'Documentary',
-		'Comedy',
-		'Horror',
-		'Crime'
-	];
+interface Props {
+	select: (groupBy: string) => void;
+}
+
+interface Category {
+	id: string;
+	label: string;
+}
+
+const FilterByCategory = (props: Props) => {
+	const categories: Category[] = Object.keys(GroupByWords).map((key) => ({
+		id: key,
+		label: GroupByWords[key as keyof typeof GroupByWords]
+	}));
+
+	const select = (category: Category) => (event: MouseEvent) => {
+		event.preventDefault();
+
+		props.select(category.label);
+	}
 
 	return (
-		<Ul>
-			<li>
-				<Link to=''>
-					All
-				</Link>
-			</li>
-			{categories.map((category, index) =>
-				<li key={index}>
-					<Link to=''>
-						{category}
-					</Link>
-				</li>
-			)}
-		</Ul>
+		<div>
+			Group By:
+			<Ul>
+				{categories.map((category) =>
+					<li key={category.id}>
+						<button onClick={select(category)}>
+							{category.label}
+						</button>
+					</li>
+				)}
+			</Ul>
+		</div>
 	);
 };
 
