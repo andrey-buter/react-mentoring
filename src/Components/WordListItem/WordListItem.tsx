@@ -1,17 +1,36 @@
 import Link from '@Components/Link/Link';
+import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
 import { Word } from '@Models/word.model';
 import ButtonSc from '@StyledComponents/Button/Button';
 import PropTypes from 'prop-types';
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 import styled from 'styled-components';
 
 const ArticleSc = styled.article`
 	padding: 10px 0;
 	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	height: 40px;
+
+	.buttons {
+		display: none;
+	}
+
+	&:hover {
+		background-color: #000;
+
+		.buttons {
+			display: block;
+		}
+	}
 `;
 
-const LinkSc = styled(Link)`
-	display: flex;
+// const LinkSc = styled(Link)`
+// `;
+
+const LinkSc = styled.a`
+	cursor: pointer;
 `;
 
 interface Props {
@@ -34,21 +53,24 @@ const WordListItem = (props: Props) => {
 		props.remove(word);
 	}
 
+	const {openDetails} = useWordDetailsContext();
+
 	return (
 		<ArticleSc>
-			<LinkSc to=''>
-				<div>
-					{word.selection}
-				</div>
-				<div>
-					{word.translation}
-				</div>
+			<div>
+				<LinkSc onClick={() => openDetails(word)}>
+					<div>
+						{word.selection} - {word.translation}
+					</div>
+				</LinkSc>
 				<div>
 					{word.uri}
 				</div>
+			</div>
+			<div className='buttons'>
 				<ButtonSc onClick={edit}>Edit</ButtonSc>
 				<ButtonSc onClick={remove}>Delete</ButtonSc>
-			</LinkSc>
+			</div>
 		</ArticleSc>
 	);
 };

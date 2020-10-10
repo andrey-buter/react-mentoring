@@ -17,10 +17,10 @@ const MainSc = styled.div`
 `;
 
 const Main = () => {
-	const [stateValue, setState] = useState<string>(GroupByWords.All);
+	const [groupByKey, setGroupByKey] = useState<string>(GroupByWords.All);
 
 	const onGroupBy = (groupBy: string) => {
-		setState(groupBy);
+		setGroupByKey(groupBy);
 	};
 
 	return (
@@ -28,7 +28,7 @@ const Main = () => {
 			<WrapperSc>
 				<FiltersPanel groupBy={onGroupBy} />
 				{/* TODO: как именуются кастомные эвенты в реакте? */}
-				<WordList groupBy={stateValue} />
+				<WordList groupBy={groupByKey} />
 			</WrapperSc>
 		</MainSc>
 	);
