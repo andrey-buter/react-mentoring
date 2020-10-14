@@ -1,6 +1,7 @@
 import React from 'react';
 
 import bgImage from '@/Assets/images/header-background.jpg';
+import AddMovieButton from '@Components/AddMovieButton/AddMovieButton';
 import AddWordButton from '@Components/AddWordButton/AddWordButton';
 import Link from '@Components/Link/Link';
 import LogoSc from '@Components/Logo/Logo';
@@ -46,6 +47,7 @@ const Header = () => {
 					</Link>
 				</LogoSc2>
 				<AddWordButton />
+				<AddMovieButton />
 				<SearchBox />
 			</HeaderWrapperSc>
 		</HeaderSc>

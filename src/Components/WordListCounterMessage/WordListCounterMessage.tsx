@@ -6,8 +6,11 @@ interface Props {
 
 const WordListCounterMessage = (props: Props) => {
 	const { count } = props;
-	let message = 'Loading...';
+	let message: string;
 
+	if (!count) {
+		message = 'Loading...';
+	} else
 	if (0 === count) {
 		message = 'No Words Found';
 	} else

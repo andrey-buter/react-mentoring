@@ -1,6 +1,7 @@
 import { openModal } from '@/Store/Actions';
 import Link from '@Components/Link/Link';
 import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
+import { ModalId } from '@Models/index';
 import { Word } from '@Models/word.model';
 import ButtonSc from '@StyledComponents/Button/Button';
 import PropTypes from 'prop-types';
@@ -41,7 +42,7 @@ interface Props {
 }
 
 interface State {
-	openModal: (id: string, data: Word) => void;
+	openModal: (id: ModalId, data: Word) => void;
 }
 
 const WordListItem = (props: Props & State) => {
@@ -92,7 +93,7 @@ const WordListItem = (props: Props & State) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
 	return {
-		openModal: (id: string, data: Word) => dispatch(openModal({ id, data }))
+		openModal: (id: ModalId, data: Word) => dispatch(openModal({ id, data }))
 	}
 }
 

@@ -3,7 +3,7 @@ import WordListCounterMessage from '@Components/WordListCounterMessage/WordListC
 import WordListItem from '@Components/WordListItem/WordListItem';
 import { GroupByWords } from '@Models/group-by-words.enum';
 import { Word } from '@Models/word.model';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import groupByService from './group-words.service';
