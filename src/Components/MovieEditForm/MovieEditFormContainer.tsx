@@ -1,24 +1,52 @@
 import { FormikHelpers } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { number, object, string } from 'yup';
 
+import { isFloat, mapRemoteErrors } from './helpers';
 import MovieEditForm from './MovieEditForm';
 import './MovieEditForm.scss';
+import { RemoteErrorsModel } from './RemoteErrors.model';
 import { Values } from './Values.model';
 
 interface Props {
+	movieId?: string | undefined;
 	data?: Values | undefined,
 }
 
-function isFloat(n: number | null | undefined) {
-	return Number(n) === n && n % 1 !== 0;
-}
-
 const MovieEditFormContainer = (props: Props) => {
-	const onSubmit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-		// do request
+	const [remoteErrorMessages, setRemoteErrorMessages] = useState<RemoteErrorsModel>({});
+	const [successResponse, setSuccessResponse] = useState<boolean>(false);
 
-		alert(JSON.stringify(values, null, 2));
+	const isUpdate = !!(props.data && props.movieId);
+
+	const onSubmit = async (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
+		const url = 'http://localhost:4000/movies';
+		const data = {
+			...(isUpdate ? { id: props.movieId } : {}),
+			...values
+		}
+		const response = await fetch(url, {
+			method: isUpdate ? 'PUT' : 'POST', // *GET, POST, PUT, DELETE, etc.
+			// mode: 'cors', // no-cors, *cors, same-origin
+			// cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			// credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json'
+				// 'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			// redirect: 'follow', // manual, *follow, error
+			// referrerPolicy: 'no-referrer', // no-referrer, *client
+			body: JSON.stringify(data) // body data type must match "Content-Type" header
+		});
+
+		const responseData = await response.json();
+
+		if (response.ok) {
+			setSuccessResponse(true);
+		} else {
+			setRemoteErrorMessages(mapRemoteErrors(responseData.messages));
+		}
+
 		setSubmitting(false);
 	}
 
@@ -59,7 +87,16 @@ const MovieEditFormContainer = (props: Props) => {
 		...props.data
 	};
 
-	return <MovieEditForm initialValues={initialValues} validationSchema={validationSchema} submit={onSubmit} />;
+	return <>
+		{successResponse
+			? <p>Success!</p>
+			: <MovieEditForm
+				initialValues={initialValues}
+				validationSchema={validationSchema}
+				remoteErrorMessages={remoteErrorMessages}
+				submit={onSubmit}
+			/>}
+	</>;
 }
 
 export default MovieEditFormContainer;

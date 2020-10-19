@@ -4,5 +4,4 @@ export interface Values {
 	posterPath: string;
 	overview: string;
 	budget: number;
-	genres: string[];
 }
