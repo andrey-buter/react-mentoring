@@ -6,12 +6,13 @@ import styled from 'styled-components';
 
 import '@/Assets/styles/styles.scss';
 import ErrorBoundary from '@Components/ErrorBoundary/ErrorBoundary';
+import NotFoundPage from '@Components/NotFound/NotFound';
 import WordDetails from '@Components/WordDetails/WordDetails';
-import WordDetailsProvider from '@Components/WordDetailsProvider/WordDetailsProvider';
 import { Word } from '@Models/word.model';
 import { RawWordsDatabase } from '@Models/words-database.model';
 import { firebaseService } from '@Services/Firebase/Firebase.service';
 import { connect } from 'react-redux';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { setWords } from './Store/Actions';
 import { Action } from './Store/Models/action.model';
@@ -46,11 +47,33 @@ const App = (props: Props) => {
 	return <>
 		<PageSc>
 			<ErrorBoundary>
-				<Header />
-				<WordDetailsProvider>
-					<WordDetails />
-					<Main />
-				</WordDetailsProvider>
+				<BrowserRouter basename='/'>
+					<Switch>
+						<Route path='/' exact>
+							<Header />
+							<Main />
+						</Route>
+						<Route path='/words' exact>
+							<Redirect to='/' />
+						</Route>
+						<Route path='/words/:wordId'>
+							<Header />
+							<WordDetails />
+						</Route>
+						<Route path='/search' exact>
+							<Redirect to='/' />
+						</Route>
+						{/* // handle query params: https://learnwithparam.com/blog/how-to-handle-query-params-in-react-router/ */}
+						<Route path='/search/:searchQuery'>
+							<Header />
+							<Main />
+						</Route>
+						<Route path='*'>
+							<Header />
+							<NotFoundPage />
+						</Route>
+					</Switch>
+				</BrowserRouter>
 				<Footer />
 			</ErrorBoundary>
 		</PageSc>
