@@ -15,7 +15,7 @@ const Modals = (props: State) => {
 	const { modalId } = props;
 
 	return <>
-		{modalId === 'editWord' ? <EditWordModal /> : null}
+		{modalId === 'editWord' ? <EditWordModal data-testid='editWord' /> : null}
 		{modalId === 'removeWord' ? <RemoveWordModal /> : null}
 		{modalId === 'addNewWord' ? <AddNewWordModal /> : null}
 		{modalId === 'addNewMovie' ? <AddNewMovieModal /> : null}
