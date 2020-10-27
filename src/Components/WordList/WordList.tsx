@@ -5,6 +5,7 @@ import { GroupByWords } from '@Models/group-by-words.enum';
 import { Word } from '@Models/word.model';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import groupByService from './group-words.service';
 
@@ -20,12 +21,24 @@ interface State {
 
 const WordList = (props: State) => {
 	const { words, groupBy } = props;
+	const { searchQuery } = useParams<{ searchQuery: string | undefined }>();
+
+	const filterWords = useCallback((words: Word[], searchQuery: string) => {
+		return words.filter((word) => {
+			return word.selection.includes(searchQuery)
+				|| word.translation.includes(searchQuery)
+				|| word.originWord.includes(searchQuery)
+				|| word.context.includes(searchQuery)
+		})
+	}, [words, searchQuery]);
 
 	const groupWords = useCallback((groupBy: string, words: Word[]) => {
 		return groupByService.groupWords(groupBy, words);
 	}, [words, groupBy]);
 
-	const groupedWords = groupWords(groupBy, words || []);
+	const filteredWords = searchQuery ? filterWords(words || [], searchQuery) : words || [];
+
+	const groupedWords = groupWords(groupBy, filteredWords);
 
 	return <>
 		<WordListCounterMessage count={words?.length} />
