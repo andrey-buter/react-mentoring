@@ -7,3 +7,4 @@ export * from './word.model';
 export * from './words-database.model';
 export * from './todo-any.model';
 export * from './modal.model';
+export * from './modal-id.model';
