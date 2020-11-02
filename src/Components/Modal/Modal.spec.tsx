@@ -4,15 +4,7 @@ import { act, render, RenderResult } from '@testing-library/react';
 import React from 'react';
 import { Modal } from './Modal';
 
-const testBlockId = 'testBlockId';
-
-// mockAComponent({
-// 	testId: testBlockId,
-// 	path: '@Components/Modal/styled-components',
-// 	componentName: 'ModalTitleSc'
-// });
-
-fdescribe('Modal', () => {
+describe('Modal', () => {
 	let renderResult: RenderResult;
 	let onClose: TEST_ANY;
 
