@@ -67,7 +67,7 @@ module.exports = {
 
   testEnvironment: "jsdom",
 
-  testRegex: "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  testRegex: "(/tests/.*|(\\.|/)(test|spec|snap))\\.(jsx?|tsx?)$",
 
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"

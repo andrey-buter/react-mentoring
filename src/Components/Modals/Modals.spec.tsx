@@ -22,6 +22,8 @@ describe('Modals', () => {
 	let store: MockStoreEnhanced<Store, {}>;
 	let renderResult: RenderResult;
 
+	// test state by redux-mock-store
+	// alt way - https://redux.js.org/recipes/writing-tests#connected-components
 	const initStore = (defaultValue: ModalId | null) => {
 		const initialState: Store = {
 			modalState: {
