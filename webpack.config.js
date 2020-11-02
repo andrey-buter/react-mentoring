@@ -22,6 +22,7 @@ module.exports = {
 		// https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
 		filename: isDev ? "[name].js" : "[name].[hash].js",
 		path: path.resolve(__dirname, "dist"),
+		publicPath: '/',
 	},
 	resolve: {
 		extensions: [".js", ".jsx", ".ts", ".tsx"],
@@ -46,6 +47,7 @@ module.exports = {
 		hot: isDev,
 		contentBase: 'dist',
 		compress: true,
+		historyApiFallback: true, // to use react router - https://ui.dev/react-router-cannot-get-url-refresh/
 	},
 	devtool: isDev ? "source-map" : "",
 	plugins: [

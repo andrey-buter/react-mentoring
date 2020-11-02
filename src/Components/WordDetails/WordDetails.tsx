@@ -1,31 +1,26 @@
-import Input from '@Components/Input/Input';
-import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
+import { Store } from '@/Store/Models';
 import { Word } from '@Models/index';
-import ButtonSc from '@StyledComponents/Button/Button';
-import React, { MouseEvent } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-interface Props {
+interface State {
+	words: Word[],
 }
 
-const WordDetails = (props: Props) => {
-	const { word, closeDetails } = useWordDetailsContext();
+const WordDetails = (props: State) => {
+	let { wordId } = useParams<{ wordId: string }>();
+
+	const word = props.words.filter((word) => word.id === wordId).shift();
 
 	if (!word) {
-		return null;
-	}
-
-	const close = (e: MouseEvent) => {
-		e.preventDefault();
-		closeDetails();
+		return <Redirect to='/' />;
 	}
 
 	return <>
 		<div>
-			<button onClick={close}>
-				Close details
-			</button>
 			<div>
 				<div>Selection</div>
 				<div>
@@ -66,4 +61,12 @@ const WordDetails = (props: Props) => {
 	</>
 }
 
-export default WordDetails;
+const mapStateToProps = (state: Store) => {
+	const { wordsState } = state;
+
+	return {
+		words: wordsState.words
+	}
+}
+
+export default connect(mapStateToProps)(WordDetails);

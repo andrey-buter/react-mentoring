@@ -1,12 +1,11 @@
 import { openModal } from '@/Store/Actions';
-import Link from '@Components/Link/Link';
-import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
 import { ModalId } from '@Models/index';
 import { Word } from '@Models/word.model';
 import ButtonSc from '@StyledComponents/Button/Button';
 import PropTypes from 'prop-types';
 import React, { MouseEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
 
@@ -33,7 +32,7 @@ const ArticleSc = styled.article`
 // const LinkSc = styled(Link)`
 // `;
 
-const LinkSc = styled.a`
+const LinkSc = styled(Link)`
 	cursor: pointer;
 `;
 
@@ -59,12 +58,10 @@ const WordListItem = (props: Props & State) => {
 		openModal('removeWord', word);
 	}
 
-	const {openDetails} = useWordDetailsContext();
-
 	return (
 		<ArticleSc>
 			<div>
-				<LinkSc onClick={() => openDetails(word)}>
+				<LinkSc to={`/words/${word.id}`}>
 					<div>
 						{word.selection} - {word.translation}
 					</div>

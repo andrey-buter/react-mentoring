@@ -3,10 +3,10 @@ import React from 'react';
 import bgImage from '@/Assets/images/header-background.jpg';
 import AddMovieButton from '@Components/AddMovieButton/AddMovieButton';
 import AddWordButton from '@Components/AddWordButton/AddWordButton';
-import Link from '@Components/Link/Link';
 import LogoSc from '@Components/Logo/Logo';
 import SearchBox from '@Components/SearchBox/SearchBox';
 import WrapperSc from '@StyledComponents/Wrapper/Wrapper';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderSc = styled.div`
