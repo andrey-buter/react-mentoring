@@ -14,6 +14,7 @@ interface Props {
 	submit: (values: Values, formikHelpers: FormikHelpers<Values>) => void;
 }
 
+// test form https://www.techzaion.com/testing-formik-forms-with-react-testing-library
 const MovieEditForm = (props: Props) => {
 	const { initialValues, validationSchema, remoteErrorMessages, submit } = props;
 
