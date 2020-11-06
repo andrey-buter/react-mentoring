@@ -4,6 +4,7 @@ import React, { MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
+import { State } from './state.model';
 
 const ButtonSc = styled.button`
 	position: absolute;
@@ -11,12 +12,9 @@ const ButtonSc = styled.button`
 	top: 20px;
 `;
 
-interface State {
-	openModal: (id: ModalId) => void;
-}
-
 const AddWordButton = (props: State) => {
 	return (
+		// How to test on click (with redux) ?
 		<ButtonSc onClick={() => props.openModal('addNewWord')}>
 			+ Add a word
 		</ButtonSc>
