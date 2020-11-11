@@ -1,19 +1,19 @@
+import '@/Assets/styles/styles.scss';
+import ErrorBoundary from '@Components/ErrorBoundary/ErrorBoundary';
 import Footer from '@Components/Footer/Footer';
 import Header from '@Components/Header/Header';
 import Main from '@Components/Main/Main';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-
-import '@/Assets/styles/styles.scss';
-import ErrorBoundary from '@Components/ErrorBoundary/ErrorBoundary';
 import NotFoundPage from '@Components/NotFound/NotFound';
+import { UniversalRouterType } from '@Components/Router/Router';
 import WordDetails from '@Components/WordDetails/WordDetails';
 import { Word } from '@Models/word.model';
 import { RawWordsDatabase } from '@Models/words-database.model';
 import { firebaseService } from '@Services/Firebase/Firebase.service';
+import React, { ComponentType, ReactNode, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Dispatch } from 'redux';
+import styled from 'styled-components';
 import { setWords } from './Store/Actions';
 import { Action } from './Store/Models/action.model';
 
@@ -24,12 +24,16 @@ const PageSc = styled.div`
 	min-height: 100vh;
 `;
 
-interface Props {
+interface State {
 	setWords: (words: Word[]) => void;
 }
 
-const App = (props: Props) => {
-	const [init] = useState<undefined>();
+interface Props {
+	UniversalRouter: UniversalRouterType,
+}
+
+const App = (props: State & Props) => {
+	const { UniversalRouter, setWords } = props;
 
 	useEffect(() => {
 		firebaseService.init()
@@ -40,14 +44,14 @@ const App = (props: Props) => {
 				};
 			}))
 			.then((words: Word[]) => {
-				props.setWords(words);
+				setWords(words);
 			});
-	}, [init]);
+	}, []);
 
 	return <>
 		<PageSc>
 			<ErrorBoundary>
-				<BrowserRouter basename='/'>
+				<UniversalRouter>
 					<Switch>
 						<Route path='/' exact>
 							<Header />
@@ -73,7 +77,7 @@ const App = (props: Props) => {
 							<NotFoundPage />
 						</Route>
 					</Switch>
-				</BrowserRouter>
+				</UniversalRouter>
 				<Footer />
 			</ErrorBoundary>
 		</PageSc>
