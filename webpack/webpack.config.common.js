@@ -17,7 +17,7 @@ module.exports = {
   context: srcPath,
   mode: "development",
   entry: {
-    main: ["@babel/polyfill", "./index.tsx"],
+    main: ["@babel/polyfill", "./client.tsx"],
     // nextBundle: "./next-script.ts",
     // test: "./babel.js",
   },

@@ -15,7 +15,8 @@
     "lint": "tslint --project tsconfig.json",
     "lint-fix": "tslint --fix --project tsconfig.json",
     "server:start": "cross-env NODE_ENV=development  node ./server",
-    "server:build": "cross-env NODE_ENV=production webpack --config ./webpack"
+    "server:build": "cross-env NODE_ENV=production webpack --config ./webpack",
+    "server:prod": "cross-env NODE_ENV=production  node ./server"
   },
   "repository": {
     "type": "git",

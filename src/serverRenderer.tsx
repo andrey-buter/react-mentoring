@@ -2,7 +2,7 @@ import { UniversalRouter, UniversalRouterType } from '@Components/Router/Router'
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { renderRoot } from './index';
+import { renderRoot } from './render-root';
 import store from './Store/store';
 
 function renderHTML(html: string, preloadedState: any) {
@@ -15,6 +15,7 @@ function renderHTML(html: string, preloadedState: any) {
 					${process.env.NODE_ENV === 'development' ? '' : '<link href="/css/main.css" rel="stylesheet" type="text/css">'}
 				</head>
 				<body>
+					This is SSR
 					<div id="root">${html}</div>
 					<script>
 						// WARNING: See the following for security issues around embedding JSON in HTML:
