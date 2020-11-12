@@ -142,7 +142,7 @@ module.exports = {
 						},
 					},
 					isDev ? "eslint-loader" : null,
-				],
+				].filter(Boolean),
 			},
 			{
 				test: /\.ts$/,
