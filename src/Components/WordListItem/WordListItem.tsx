@@ -34,6 +34,8 @@ const ArticleSc = styled.article`
 
 const LinkSc = styled(Link)`
 	cursor: pointer;
+	color: white !important;
+	text-decoration: none;
 `;
 
 interface Props {
@@ -67,7 +69,9 @@ const WordListItem = (props: Props & State) => {
 					</div>
 				</LinkSc>
 				<div>
-					{word.uri}
+					<a href={word.uri} target='_blank' title={word.uri}>
+						{word.uri}
+					</a>
 				</div>
 			</div>
 			<div className='buttons'>

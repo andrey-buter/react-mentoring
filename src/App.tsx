@@ -53,6 +53,10 @@ const App = (props: Props) => {
 							<Header />
 							<Main />
 						</Route>
+						<Route path='/react-mentoring' exact>
+							<Header />
+							<Main />
+						</Route>
 						<Route path='/words' exact>
 							<Redirect to='/' />
 						</Route>

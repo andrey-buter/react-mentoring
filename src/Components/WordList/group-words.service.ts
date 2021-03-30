@@ -48,21 +48,35 @@ const groupByService = {
 	_groupWordsTheSameWord(words: Word[]): GroupedWordsModel[] {
 		const groupedWords = words
 			.reduce((output, word) => {
-				const key = word.originWord || word.selection.trim();
-				if (!output[key]) {
-					output[key] = [];
+				const sameWord = word.originWord || word.selection.trim();
+				const matchWord = sameWord
+					.replace(/es$/, '')
+					.replace(/s$/, '')
+					// .replace(/ned$/, 'n')
+					// .replace(/ed$/, 'e')
+
+				if (!output[matchWord]) {
+					output[matchWord] = [];
 				}
-				output[key].push(word);
+				output[matchWord].push(word);
 
 				return output;
 			}, {} as { [key: string]: Word[] });
 
-		return Object.keys(groupedWords).map((key) => {
+		const groups = Object.keys(groupedWords).map((key) => {
+			const words = groupedWords[key];
+
 			return {
-				id: key,
-				words: groupedWords[key]
+				id: `(${words.length}) ${key}`,
+				words
 			};
-		})
+		});
+
+		groups.sort((group1, group2) => {
+			return group1.words.length > group2.words.length ? -1 : 1;
+		});
+
+		return groups;
 	}
 }
 

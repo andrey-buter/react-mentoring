@@ -40,8 +40,10 @@ const WordList = (props: State) => {
 
 	const groupedWords = groupWords(groupBy, filteredWords);
 
+	const count = groupBy === GroupByWords.SameWord ? groupedWords?.length : words?.length;
+
 	return <>
-		<WordListCounterMessage count={words?.length} />
+		<WordListCounterMessage count={count} />
 		{words ? (
 			<ul>
 				{groupedWords.map((group) => <li key={group.id}>

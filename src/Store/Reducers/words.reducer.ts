@@ -13,7 +13,7 @@ export function wordsReducer(state: WordsState = initialState, action: Action) {
 		case UPDATE_WORDS:
 			return {
 				...state,
-				words: action.payload
+				words: action.payload.reverse()
 			}
 		case GROUP_BY:
 			return {
