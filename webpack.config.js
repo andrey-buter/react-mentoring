@@ -22,7 +22,7 @@ module.exports = {
 		// https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
 		filename: isDev ? "[name].js" : "[name].[hash].js",
 		path: path.resolve(__dirname, "dist"),
-		publicPath: '/',
+		publicPath: isDev ? '/' : './', // './' is needed to run scripts on github pages relatively
 	},
 	resolve: {
 		extensions: [".js", ".jsx", ".ts", ".tsx"],
