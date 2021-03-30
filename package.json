@@ -13,7 +13,9 @@
     "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
     "test": "jest --config ./jest.config.js",
     "lint": "tslint --project tsconfig.json",
-    "lint-fix": "tslint --fix --project tsconfig.json"
+    "lint-fix": "tslint --fix --project tsconfig.json",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/andrey-buter/react-mentoring/issues"
   },
-  "homepage": "https://github.com/andrey-buter/react-mentoring#readme",
+  "homepage": "https://andrey-buter.github.io/react-mentoring",
   "dependencies": {
     "@firebase/firestore-types": "^1.12.1",
     "@types/react-redux": "^7.1.9",

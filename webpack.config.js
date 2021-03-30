@@ -141,7 +141,7 @@ module.exports = {
 							plugins: ["@babel/plugin-proposal-class-properties"],
 						},
 					},
-					isDev ? "eslint-loader" : null,
+					isDev ? "eslint-loader" : () => {},
 				],
 			},
 			{
