@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import FiltersPanel from '@Components/FiltersPanel/FiltersPanel';
+import Modals from '@Components/Modals/Modals';
 import WordList from '@Components/WordList/WordList';
 import { GroupByWords } from '@Models/group-by-words.enum';
 import WrapperSc from '@StyledComponents/Wrapper/Wrapper';
@@ -17,18 +18,12 @@ const MainSc = styled.div`
 `;
 
 const Main = () => {
-	const [groupByKey, setGroupByKey] = useState<string>(GroupByWords.All);
-
-	const onGroupBy = (groupBy: string) => {
-		setGroupByKey(groupBy);
-	};
-
 	return (
 		<MainSc>
 			<WrapperSc>
-				<FiltersPanel groupBy={onGroupBy} />
-				{/* TODO: как именуются кастомные эвенты в реакте? */}
-				<WordList groupBy={groupByKey} />
+				<FiltersPanel />
+				<WordList />
+				<Modals />
 			</WrapperSc>
 		</MainSc>
 	);

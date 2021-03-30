@@ -1,12 +1,12 @@
-import React, { Component, MouseEvent, useState } from 'react';
+import React from 'react';
 
 import bgImage from '@/Assets/images/header-background.jpg';
-import AddNewWordModal from '@Components/AddNewWordModal/AddNewWordModal';
+import AddMovieButton from '@Components/AddMovieButton/AddMovieButton';
 import AddWordButton from '@Components/AddWordButton/AddWordButton';
-import Link from '@Components/Link/Link';
 import LogoSc from '@Components/Logo/Logo';
 import SearchBox from '@Components/SearchBox/SearchBox';
 import WrapperSc from '@StyledComponents/Wrapper/Wrapper';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderSc = styled.div`
@@ -37,12 +37,6 @@ const HeaderWrapperSc = styled(WrapperSc)`
 `;
 
 const Header = () => {
-	const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
-	const openModal = (event: MouseEvent) => setIsOpenModal(true);
-
-	const closeModal = () => setIsOpenModal(false);
-
 	return <>
 		<HeaderSc image={bgImage}>
 			<HeaderShadowSc></HeaderShadowSc>
@@ -52,10 +46,10 @@ const Header = () => {
 						<LogoSc />
 					</Link>
 				</LogoSc2>
-				<AddWordButton click={openModal} />
+				<AddWordButton />
+				<AddMovieButton />
 				<SearchBox />
 			</HeaderWrapperSc>
-			{isOpenModal ? <AddNewWordModal close={closeModal} /> : null}
 		</HeaderSc>
 	</>
 }

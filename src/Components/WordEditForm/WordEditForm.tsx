@@ -7,15 +7,17 @@ import styled from 'styled-components';
 
 interface Props {
 	data?: Word | null | undefined,
-	submit?: (event: MouseEvent) => void;
+	submit?: (word: Word) => void;
 }
 
 const WordEditForm = (props: Props) => {
 	const onSubmit = (event: MouseEvent) => {
 		event.preventDefault();
 
-		// tslint:disable-next-line:no-unused-expression
-		props.submit && props.submit(event);
+		if (props.data) {
+			// tslint:disable-next-line:no-unused-expression
+			props.submit && props.submit(props.data);
+		}
 	}
 
 	const data = props.data ?? {

@@ -1,9 +1,12 @@
-import Link from '@Components/Link/Link';
-import { useWordDetailsContext } from '@Components/WordDetailsProvider/WordDetailsProvider';
+import { openModal } from '@/Store/Actions';
+import { ModalId } from '@Models/index';
 import { Word } from '@Models/word.model';
 import ButtonSc from '@StyledComponents/Button/Button';
 import PropTypes from 'prop-types';
 import React, { MouseEvent, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const ArticleSc = styled.article`
@@ -29,36 +32,36 @@ const ArticleSc = styled.article`
 // const LinkSc = styled(Link)`
 // `;
 
-const LinkSc = styled.a`
+const LinkSc = styled(Link)`
 	cursor: pointer;
 `;
 
 interface Props {
 	word: Word;
-	edit: (word: Word) => void;
-	remove: (word: Word) => void;
 }
 
-const WordListItem = (props: Props) => {
-	const { word } = props;
+interface State {
+	openModal: (id: ModalId, data: Word) => void;
+}
+
+const WordListItem = (props: Props & State) => {
+	const { word, openModal } = props;
 
 	const edit = (event: MouseEvent) => {
 		// TODO: why to do preventDefault
 		event.preventDefault();
-		props.edit(props.word);
+		openModal('editWord', word);
 	}
 
 	const remove = (event: MouseEvent) => {
 		event.preventDefault();
-		props.remove(word);
+		openModal('removeWord', word);
 	}
-
-	const {openDetails} = useWordDetailsContext();
 
 	return (
 		<ArticleSc>
 			<div>
-				<LinkSc onClick={() => openDetails(word)}>
+				<LinkSc to={`/words/${word.id}`}>
 					<div>
 						{word.selection} - {word.translation}
 					</div>
@@ -85,4 +88,10 @@ const WordListItem = (props: Props) => {
 // 	})
 // };
 
-export default WordListItem;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		openModal: (id: ModalId, data: Word) => dispatch(openModal({ id, data }))
+	}
+}
+
+export default connect(null, mapDispatchToProps)(WordListItem);
